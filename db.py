@@ -6,11 +6,22 @@ import json
 client = pymongo.MongoClient('192.168.3.115', 27017)
 db = client.mnemosyne
 
+
 def get_session_id(at_ip):
     id_list = list()
-    for item in db.session.find({"source_ip":at_ip}):
+    for item in db.session.find({"source_ip":at_ip}).sort("timestamp"):
         id_list.append(item["_id"])
     return id_list
+
+
+def get_session_data(session_id):                                              
+    return db.session.find_one({"_id":session_id})
+
+
+def transform_session_to_hpfeed(session_id):
+    item = db.session.find_one({"_id":session_id})
+    hpfeed_id = item["hpfeed_id"]
+    return db.hpfeed.find_one({"_id":hpfeed_id})
 
 
 def get_ip():
