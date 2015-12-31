@@ -5,7 +5,7 @@ import data
 
 
 #res = list()
-#res = db.get_ip()
+#res = db.get_update_ip()
 #insert ip info to mongodb
 #for res_i in res:
 #	print res_i

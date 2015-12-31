@@ -24,13 +24,21 @@ def transform_session_to_hpfeed(session_id):
     return db.hpfeed.find_one({"_id":hpfeed_id})
 
 
-def get_ip():
+def get_update_ip():
     ip_list = list()
     for item in db.session.find():
         ip_list.append((item["source_ip"]).encode("utf-8"))
     ip_list = list(set(ip_list))
     return ip_list
 # type = list
+
+
+# ip from ipinfo
+def get_ip():
+    ip_list = list()
+    for item in db.ipinfo.find():
+        ip_list.append((item["ip"]).encode("utf-8"))
+    return ip_list
 
 
 # need to better
@@ -76,6 +84,13 @@ def get_ip_protocol_count(at_ip, protocol):
     sum_num = db.session.find(
               {"source_ip": at_ip, "protocol": protocol}).count()
     return sum_num
+
+
+def get_protocol_count(protocol):
+    if "all" in protocol:
+        return db.session.find().count()
+    else:
+        return db.session.find({"protocol": protocol}).count()
 
 def get_test(at_ip):
     return db.session.find({"source_ip": at_ip})
