@@ -1,6 +1,7 @@
 import pymongo
 import urllib2
 import json
+import datetime
 
 
 client = pymongo.MongoClient('192.168.3.115', 27017)
@@ -37,6 +38,13 @@ def get_update_ip():
 def get_ip():
     ip_list = list()
     for item in db.ipinfo.find():
+        ip_list.append((item["ip"]).encode("utf-8"))
+    return ip_list
+
+# ip from ipinfo base country
+def get_ip_from_country(country):
+    ip_list = list()
+    for item in db.ipinfo.find({"country":country}):
         ip_list.append((item["ip"]).encode("utf-8"))
     return ip_list
 
@@ -81,8 +89,13 @@ def get_ip_protocol(at_ip):
 
 
 def get_ip_protocol_count(at_ip, protocol):
-    sum_num = db.session.find(
+    pro = list()
+    pro = get_ip_protocol(at_ip)
+    if protocol in pro:
+        sum_num = db.session.find(
               {"source_ip": at_ip, "protocol": protocol}).count()
+    else:
+        sum_num = 0
     return sum_num
 
 
@@ -93,4 +106,5 @@ def get_protocol_count(protocol):
         return db.session.find({"protocol": protocol}).count()
 
 def get_test(at_ip):
-    return db.session.find({"source_ip": at_ip})
+    return db.session.find({"source_ip": at_ip}).count()
+

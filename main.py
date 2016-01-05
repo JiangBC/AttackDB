@@ -1,23 +1,10 @@
 
 import db
 import pprint
-import data
+import db_method
 
 
-#res = list()
-#res = db.get_update_ip()
-#insert ip info to mongodb
-#for res_i in res:
-#	print res_i
-#	if db.get_ip_info(res_i):
-#		print 'pass'
-#	else:
-#		db.insert_ip_info(db.get_url_ip_info(res_i))
-#		print 'insert'
-#	i=i+1
-#	print i
-#	print '======================'
-
+db_method.update_ipinfo()
 
 #get ip info from db
 #pprint.pprint(db.get_db_attack_ip_info(res[0]))
@@ -33,5 +20,5 @@ import data
 #print "====================="
 #print db.get_attack_ip_count(x)
 
-data.attack_detailed_data(at_ip='158.69.192.207',num=10)
+# data.attack_detailed_data(at_ip='158.69.192.207',num=10)
 #data.attack_detailed_data()

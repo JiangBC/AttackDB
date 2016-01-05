@@ -1,9 +1,29 @@
 import db
+import sys
 import pprint
 
+def update_ipinfo():
+    i = 1
+    j='*'
+    res = db.get_update_ip()
+    l = len(res)
+    k = l/50
+# insert ip info to mongodb
+    for res_i in res:
+        sys.stdout.write("      "+str(int((i*100/l)))+'%  ||'+j+'->'+"\r")
+        if i >= k:
+            j += '*'
+            k = k+l/50
+        i=i+1
+        if db.get_ip_info(res_i):
+            sys.stdout.write(" Pass "+"\r")
+        else:
+            sys.stdout.write("insert"+"\r")
+            db.insert_ip_info(db.get_url_ip_info(res_i))
+    print "Ipinfo Update OK"
 
 
-def attack_detailed_data(at_ip='8.8.8.8', num=2):
+def attack_detailed_shows(at_ip='8.8.8.8', num=2):
     i = 0
     k = 1
     if db.get_ip_count(at_ip)==-1:
@@ -31,10 +51,11 @@ def attack_detailed_data(at_ip='8.8.8.8', num=2):
         pprint.pprint(info_dict)
         i = i + 1
         if i == num:
-    	    print "========== Press Enter continue =========="
+            print "========== Press Enter continue =========="
             if raw_input("Your choose:"):
                 print "enough"
                 break
             else:
                 print "========== more 5 data =========="
                 i = 0
+    print "============end============="
